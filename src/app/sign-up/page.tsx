@@ -1,23 +1,31 @@
 "use client";
 import { UserDataType } from "@/lib/types";
+import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
 const SignUp = () => {
+  const { setUser } = useContext(AuthContext) || {};
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<UserDataType>();
-  const router = useRouter();
+
   const onSubmit = handleSubmit(async (userData: UserDataType) => {
     const response = await fetch("/api/auth/sign-up", {
       method: "POST",
       body: JSON.stringify(userData),
     });
 
-    if (response.ok) {
+    const result = await response.json();
+
+    if (response.ok && setUser) {
+      setUser(result);
       router.push("/contact");
     }
   });

@@ -1,17 +1,35 @@
 "use client";
-import { LoginType } from "@/lib/types";
+import { AuthUserType, LoginType } from "@/lib/types";
+import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const { setUser } = useContext(AuthContext) || {};
+  const router = useRouter();
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<LoginType>();
 
-  const onSubmit = handleSubmit((value) => {
+  const onSubmit = handleSubmit(async (value) => {
     console.log(value);
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(value),
+    });
+
+    const result = (await response.json()) as AuthUserType;
+    if (setUser && result.email) {
+      setUser(result);
+      if (result.role === "Admin") {
+        router.push("/");
+      }
+      router.push("/contact");
+    }
   });
 
   const showInputError = () => {
@@ -35,7 +53,7 @@ const Login = () => {
             <input
               type="text"
               {...register("email", { required: true })}
-              placeholder="Full Name"
+              placeholder="Email Address"
               className="custom-input"
             />
             {errors.email && showInputError()}
@@ -44,7 +62,7 @@ const Login = () => {
             <input
               type="text"
               {...register("password", { required: true })}
-              placeholder="Email Address"
+              placeholder="Password"
               className="custom-input"
             />
             {errors.password && showInputError()}

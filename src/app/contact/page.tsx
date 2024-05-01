@@ -1,11 +1,13 @@
 "use client";
 import { ContactDataType } from "@/lib/types";
 import { AuthContext } from "@/providers/AuthProvider";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
 const Contact = () => {
-  const { user } = useContext(AuthContext) || {};
+  const { user, loading, setRefetchUser } = useContext(AuthContext) || {};
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -29,8 +31,17 @@ const Contact = () => {
       credentials: "include",
     });
     const result = await response.json();
-    console.log(result);
+
+    if (response.ok && setRefetchUser) {
+      setRefetchUser((p) => !p);
+    }
   };
+
+  if (loading) {
+    return <span>Loading</span>;
+  } else if (!user?.email) {
+    router.push("/login");
+  }
 
   return (
     <div className="">

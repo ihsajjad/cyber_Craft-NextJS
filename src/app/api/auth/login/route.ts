@@ -10,32 +10,33 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
     await connectToDB();
 
-    const isUserExist = await User.findOne({ email: userData.email });
+    const user = await User.findOne({ email: userData.email });
 
-    if (isUserExist) {
+    if (!user) {
       return new NextResponse(
-        JSON.stringify({ message: "User already exists" }),
+        JSON.stringify({ message: "User doesn't exists" }),
         { status: 409 }
       );
     }
 
-    userData.role = "User";
+    const isValidUser = user.password === userData.password;
 
-    const newUser = new User(userData);
-    await newUser.save();
+    if (!isValidUser) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid credentials" }),
+        { status: 409 }
+      );
+    }
 
     const token = jwt.sign(
-      { userId: newUser._id },
+      { userId: user._id },
       process.env.JWT_SECRET_KEY as string,
       {
         expiresIn: "1d",
       }
     );
 
-    let response = NextResponse.json({
-      email: userData.email,
-      role: newUser.role,
-    });
+    let response = NextResponse.json({ email: user.email, role: user.role });
 
     // setting the cookies to the user's browser
     response.cookies.set("auth_token", token, {
