@@ -3,9 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --primary-color: #3366cc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,17 +15,33 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .contact-container {
+    @apply sm:px-10 px-4;
+  }
+  .custom-form-container {
+    @apply border lg:w-[700px] md:w-[600px] sm:w-[80vw] w-[90vw] bg-gradient-to-b from-[#C2DAFF] to-[#EFF1F0] rounded-lg px-4 shadow-md shadow-[#8d8b8b67] h-[397px] flex flex-col items-center justify-center;
+  }
+
+  .custom-form {
+    @apply flex gap-5 flex-col items-center justify-center mt-7 sm:w-[350px] w-full max-w-[350px] mx-auto text-[16px];
+  }
+
+  .custom-input {
+    @apply py-2 px-4 rounded-[10px] shadow-[0_3px_2px_0] shadow-[var(--primary-color)] text-[16px] w-full;
+  }
+
+  .custom-btn {
+    @apply bg-[var(--primary-color)] text-white w-full py-2 cursor-pointer;
+  }
+
+  input,
+  textarea {
+    @apply focus:outline-none;
   }
 }
