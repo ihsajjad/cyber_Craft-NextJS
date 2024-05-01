@@ -1,12 +1,45 @@
+"use client";
 import { AuthUserType } from "@/lib/types";
-import { ReactNode, createContext, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
 
-const AuthContext = createContext<AuthUserType | undefined>(undefined);
+type ContextType = {
+  user: AuthUserType;
+  setRefetchUser: Dispatch<SetStateAction<boolean>>;
+};
+
+export const AuthContext = createContext<ContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUserType>();
+  const [user, setUser] = useState<AuthUserType>({ email: "", role: "" });
+  const [refetchUser, setRefetchUser] = useState<boolean>(false);
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const response = await fetch("/api/auth/currentUser", {
+        credentials: "include",
+      });
+
+      const result = await response.json();
+      setUser(result);
+      console.log(result);
+    };
+
+    getCurrentUser();
+  }, []);
+
+  const value = {
+    user,
+    setRefetchUser,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const userData = (await req.json()) as UserDataType;
-  console.log("hitted", userData);
 
   try {
     await connectToDB();
@@ -19,6 +18,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         { status: 409 }
       );
     }
+
+    userData.role = "User";
 
     const newUser = new User(userData);
     await newUser.save();

@@ -1,8 +1,12 @@
 "use client";
 import { ContactDataType } from "@/lib/types";
+import { AuthContext } from "@/providers/AuthProvider";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
 const Contact = () => {
+  const { user } = useContext(AuthContext) || {};
+
   const {
     handleSubmit,
     register,
@@ -19,6 +23,15 @@ const Contact = () => {
     );
   };
 
+  const handleLogOut = async () => {
+    const response = await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    const result = await response.json();
+    console.log(result);
+  };
+
   return (
     <div className="">
       {/* nav bar */}
@@ -32,9 +45,15 @@ const Contact = () => {
             placeholder="search"
             className="sm:py-2 sm:px-5 px-2 py-1 rounded focus:outline-none text-lg sm:w-fit w-[120px] "
           />
-          <button className="bg-white py-2 px-3 rounded-full sm:text-sm text-xs ml-3 my-auto">
-            Logout
-          </button>
+
+          {user?.email && (
+            <button
+              onClick={handleLogOut}
+              className="bg-white py-2 px-3 rounded-full sm:text-sm text-xs ml-3 my-auto"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
 
