@@ -1,4 +1,24 @@
+"use client";
+import { ContactDataType } from "@/lib/types";
+import { useForm } from "react-hook-form";
+
 const Contact = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<ContactDataType>();
+
+  const onSubmit = handleSubmit((value: ContactDataType) => {
+    console.log(value);
+  });
+
+  const showInputError = () => {
+    return (
+      <span className="text-sm text-red-500">This field is required!</span>
+    );
+  };
+
   return (
     <div className="">
       {/* nav bar */}
@@ -21,33 +41,43 @@ const Contact = () => {
             <h1 className="font-semibold text-5xl text-slate-600 sm:my-8 my-2">
               Contact us
             </h1>
-            <form className="flex flex-col gap-4 text-lg">
+            <form onSubmit={onSubmit} className="flex flex-col gap-4 text-lg">
               <label>
                 <input
                   type="text"
+                  {...register("name", { required: true })}
                   placeholder="Name"
                   className="bg-[#EDF6FD] py-2 px-4 rounded-full w-full"
                 />
+                {errors.name && showInputError()}
               </label>
               <label>
                 <input
                   type="email"
+                  {...register("email", { required: true })}
                   placeholder="Email"
                   className="bg-[#EDF6FD] py-2 px-4 rounded-full w-full"
                 />
+                {errors.email && showInputError()}
               </label>
               <label>
                 <input
                   type="tel"
+                  {...register("phone", { required: true })}
                   placeholder="Phone"
                   className="bg-[#EDF6FD] py-2 px-4 rounded-full w-full"
                 />
+                {errors.phone && showInputError()}
               </label>
-              <textarea
-                rows={3}
-                className="bg-[#EDF6FD] py-2 px-4 rounded-2xl w-full resize-none"
-                placeholder="Message"
-              ></textarea>
+              <label>
+                <textarea
+                  rows={3}
+                  {...register("message", { required: true })}
+                  className="bg-[#EDF6FD] py-2 px-4 rounded-2xl w-full resize-none"
+                  placeholder="Message"
+                ></textarea>
+                {errors.message && showInputError()}
+              </label>
 
               <input
                 type="submit"

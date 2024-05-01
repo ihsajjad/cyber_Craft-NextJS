@@ -25,7 +25,7 @@ body {
     @apply sm:px-10 px-4;
   }
   .custom-form-container {
-    @apply border lg:w-[700px] md:w-[600px] sm:w-[80vw] w-[90vw] bg-gradient-to-b from-[#C2DAFF] to-[#EFF1F0] rounded-lg px-4 shadow-md shadow-[#8d8b8b67] h-[397px] flex flex-col items-center justify-center;
+    @apply border lg:w-[700px] md:w-[600px] sm:w-[80vw] w-[90vw] bg-gradient-to-b from-[#C2DAFF] to-[#EFF1F0] rounded-lg px-4 shadow-md shadow-[#8d8b8b67] min-h-[397px] flex flex-col items-center justify-center;
   }
 
   .custom-form {
