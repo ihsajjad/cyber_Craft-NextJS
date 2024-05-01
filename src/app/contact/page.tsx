@@ -26,11 +26,16 @@ const Contact = () => {
         <span className="font-bold text-white sm:text-3xl text-xl">
           DEMO LOGO
         </span>
-        <input
-          type="search"
-          placeholder="search"
-          className="sm:py-2 sm:px-5 px-2 py-1 rounded focus:outline-none text-lg sm:w-fit w-[200px] "
-        />
+        <div>
+          <input
+            type="search"
+            placeholder="search"
+            className="sm:py-2 sm:px-5 px-2 py-1 rounded focus:outline-none text-lg sm:w-fit w-[120px] "
+          />
+          <button className="bg-white py-2 px-3 rounded-full sm:text-sm text-xs ml-3 my-auto">
+            Logout
+          </button>
+        </div>
       </div>
 
       {/*  */}

@@ -17,3 +17,8 @@ export type ContactDataType = {
   phone: string;
   message: string;
 };
+
+export type AuthUserType = {
+  email: string;
+  role: string;
+};

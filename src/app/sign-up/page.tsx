@@ -1,6 +1,7 @@
 "use client";
 import { UserDataType } from "@/lib/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 const SignUp = () => {
@@ -9,15 +10,16 @@ const SignUp = () => {
     register,
     formState: { errors },
   } = useForm<UserDataType>();
-
+  const router = useRouter();
   const onSubmit = handleSubmit(async (userData: UserDataType) => {
     const response = await fetch("/api/auth/sign-up", {
       method: "POST",
       body: JSON.stringify(userData),
     });
 
-    const result = await response.json();
-    console.log(result);
+    if (response.ok) {
+      router.push("/contact");
+    }
   });
 
   const showInputError = () => {
