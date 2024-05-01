@@ -1,5 +1,5 @@
 "use client";
-import { SignUpType } from "@/lib/types";
+import { UserDataType } from "@/lib/types";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 
@@ -8,10 +8,16 @@ const SignUp = () => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<SignUpType>();
+  } = useForm<UserDataType>();
 
-  const onSubmit = handleSubmit((value) => {
-    console.log(value);
+  const onSubmit = handleSubmit(async (userData: UserDataType) => {
+    const response = await fetch("/api/auth/sign-up", {
+      method: "POST",
+      body: JSON.stringify(userData),
+    });
+
+    const result = await response.json();
+    console.log(result);
   });
 
   const showInputError = () => {

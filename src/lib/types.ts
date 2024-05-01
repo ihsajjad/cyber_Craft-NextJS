@@ -1,7 +1,9 @@
-export type SignUpType = {
+export type UserDataType = {
   fullName: string;
   email: string;
   password: string;
+  _id?: string;
+  role?: string;
 };
 
 export type LoginType = {
