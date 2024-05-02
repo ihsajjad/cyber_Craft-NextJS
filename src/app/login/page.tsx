@@ -26,11 +26,11 @@ const Login = () => {
     const result = (await response.json()) as AuthUserType;
     if (response.ok && setUser && result.email) {
       setUser(result);
-      if (result.role === "Admin") {
+      if (result.role === "User") {
+        router.push("/contact");
+      } else {
         router.push("/");
-        successToast("Login Successfull");
       }
-      router.push("/contact");
       successToast("Login Successfull");
     } else {
       errorToast("Failed to login");
