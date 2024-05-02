@@ -14,8 +14,7 @@ const Dashboard = () => {
   const [page, setPage] = useState<number>(1);
   const [pages, setPages] = useState<number>();
   const searchRef = useRef<HTMLInputElement>(null);
-
-  const isLogin = true;
+  const [refetch, setRefetch] = useState<boolean>(false);
 
   useEffect(() => {
     const loadContacts = async () => {
@@ -36,7 +35,7 @@ const Dashboard = () => {
     };
 
     user?.role === "Admin" && loadContacts();
-  }, [user, search, page]);
+  }, [user, search, page, refetch]);
 
   const handleSearch = () => {
     if (searchRef?.current) setSearch(searchRef?.current?.value);
@@ -53,6 +52,9 @@ const Dashboard = () => {
     );
 
     const result = await response.json();
+    if (response.ok) {
+      setRefetch((p) => !p);
+    }
     console.log(result);
   };
 
@@ -92,7 +94,7 @@ const Dashboard = () => {
               />
               <button
                 onClick={handleSearch}
-                className="bg-[var(--primary-color)] absolute right-1 top-1 text-white p-0.5 w-8 h-8 inline-flex items-center justify-center"
+                className="bg-[var(--primary-color)] absolute right-1 top-1 text-white p-0.5 w-8 h-8 inline-flex items-center justify-center rounded"
               >
                 <FaSearch size={25} />
               </button>
@@ -161,7 +163,9 @@ const Dashboard = () => {
                             </div>
                           </dialog>
                           <button
-                            onClick={() => handleDeleteContact(contact._id)}
+                            onClick={() =>
+                              handleDeleteContact(contact?._id as string)
+                            }
                             className="w-8 h-8 bg-white border border-[var(--primary-color)] text-red-500 rounded-full flex items-center justify-center"
                           >
                             <Image
