@@ -51,7 +51,7 @@ const Login = () => {
         <form onSubmit={onSubmit} className="custom-form">
           <label className="w-full">
             <input
-              type="text"
+              type="email"
               {...register("email", { required: true })}
               placeholder="Email Address"
               className="custom-input"
@@ -60,7 +60,7 @@ const Login = () => {
           </label>
           <label className="w-full">
             <input
-              type="text"
+              type="password"
               {...register("password", { required: true })}
               placeholder="Password"
               className="custom-input"

@@ -12,6 +12,7 @@ export type LoginType = {
 };
 
 export type ContactDataType = {
+  _id?: string;
   name: string;
   email: string;
   phone: string;
@@ -21,12 +22,4 @@ export type ContactDataType = {
 export type AuthUserType = {
   email: string;
   role: string;
-};
-
-export type ContactType = {
-  _id?: string;
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
 };

@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     if (!user) {
       return new NextResponse(
         JSON.stringify({ message: "User doesn't exists" }),
-        { status: 409 }
+        { status: 400 }
       );
     }
 
@@ -24,7 +24,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     if (!isValidUser) {
       return new NextResponse(
         JSON.stringify({ message: "Invalid credentials" }),
-        { status: 409 }
+        { status: 400 }
       );
     }
 

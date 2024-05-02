@@ -6,7 +6,8 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
 const Contact = () => {
-  const { user, loading, setRefetchUser } = useContext(AuthContext) || {};
+  const { user, loading, setRefetchUser, setUser } =
+    useContext(AuthContext) || {};
   const router = useRouter();
 
   const {
@@ -15,8 +16,19 @@ const Contact = () => {
     formState: { errors },
   } = useForm<ContactDataType>();
 
-  const onSubmit = handleSubmit((value: ContactDataType) => {
+  const onSubmit = handleSubmit(async (value: ContactDataType) => {
     console.log(value);
+    const response = await fetch("/api/contacts/createContact", {
+      method: "POST",
+      body: JSON.stringify(value),
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result) {
+      console.log(result);
+    }
+    console.log(result);
   });
 
   const showInputError = () => {
@@ -32,8 +44,9 @@ const Contact = () => {
     });
     const result = await response.json();
 
-    if (response.ok && setRefetchUser) {
+    if (response.ok && setRefetchUser && setUser) {
       setRefetchUser((p) => !p);
+      setUser({ email: "", role: "" });
     }
   };
 
@@ -89,6 +102,7 @@ const Contact = () => {
               <label>
                 <input
                   type="email"
+                  defaultValue={user?.email}
                   {...register("email", { required: true })}
                   placeholder="Email"
                   className="bg-[#EDF6FD] py-2 px-4 rounded-full w-full"
