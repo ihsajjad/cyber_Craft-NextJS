@@ -1,7 +1,7 @@
 "use client";
 import TablePagination from "@/components/TablePagination";
 import { ContactDataType } from "@/lib/types";
-import { successToast, errorToast } from "@/lib/utils";
+import { errorToast, successToast } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -32,7 +32,6 @@ const Dashboard = () => {
         setPages(result.pagination.pages);
         setPage(result.pagination.page);
       }
-      console.log(result);
     };
 
     user?.role === "Admin" && loadContacts();
