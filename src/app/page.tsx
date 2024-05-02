@@ -4,12 +4,13 @@ import { ContactDataType } from "@/lib/types";
 import { errorToast, successToast } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
+import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { IoMdMail, IoMdMenu } from "react-icons/io";
 
 const Dashboard = () => {
-  const { user, loading } = useContext(AuthContext) || {};
+  const { user, loading, setUser } = useContext(AuthContext) || {};
   const [contacts, setContacts] = useState<ContactDataType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
@@ -52,11 +53,23 @@ const Dashboard = () => {
     );
 
     const result = await response.json();
-    if (response.ok) {
+    if (response.ok && result) {
       setRefetch((p) => !p);
       successToast("Contact was deleted successfully");
     } else {
       errorToast("Something went wrong");
+    }
+  };
+
+  const handleLogOut = async () => {
+    const response = await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    const result = await response.json();
+
+    if (response.ok && setUser) {
+      setUser({ email: "", role: "" });
     }
   };
 
@@ -66,7 +79,19 @@ const Dashboard = () => {
   }
 
   if (!isAdmin) {
-    return <h2 className="text-3xl">Unauthorized Access</h2>;
+    return (
+      <div className="w-screen h-screen flex items-center justify-center text-center">
+        <div>
+          <h2 className="text-3xl mb-5">Unauthorized Access</h2>
+          <Link
+            href={"/login"}
+            className="mx-auto w-fit custom-btn rounded-lg px-4"
+          >
+            Login here
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -193,7 +218,7 @@ const Dashboard = () => {
       </div>
 
       {/* sidebar */}
-      <div className="drawer-side z-20 bg-[#E6E6E6] border-r">
+      <div className="drawer-side z-20 bg-[#E6E6E6] border-r relative">
         <label
           htmlFor="my-drawer-2"
           aria-label="close sidebar"
@@ -217,6 +242,14 @@ const Dashboard = () => {
             </span>
           </li>
         </ul>
+        {user?.email && (
+          <button
+            onClick={handleLogOut}
+            className="absolute bottom-2 left-2 bg-white py-2 px-3 rounded-full sm:text-sm text-xs w-[95%] border border-[var(--primary-color)]"
+          >
+            Logout
+          </button>
+        )}
       </div>
     </main>
   );

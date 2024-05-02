@@ -16,6 +16,14 @@ create a .env file in the root directory and paste them
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Technologies
+
+- Next.js
+- TypeScript
+- Mongoose
+- Json Web Token
+- React hook form
+
 ## Admin Credentials
 
 - email: admin@gmail.com
