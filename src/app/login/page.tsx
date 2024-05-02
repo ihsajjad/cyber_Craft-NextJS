@@ -1,5 +1,6 @@
 "use client";
 import { AuthUserType, LoginType } from "@/lib/types";
+import { errorToast, successToast } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -23,12 +24,16 @@ const Login = () => {
     });
 
     const result = (await response.json()) as AuthUserType;
-    if (setUser && result.email) {
+    if (response.ok && setUser && result.email) {
       setUser(result);
       if (result.role === "Admin") {
         router.push("/");
+        successToast("Login Successfull");
       }
       router.push("/contact");
+      successToast("Login Successfull");
+    } else {
+      errorToast("Failed to login");
     }
   });
 

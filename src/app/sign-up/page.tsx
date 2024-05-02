@@ -1,5 +1,6 @@
 "use client";
 import { UserDataType } from "@/lib/types";
+import { errorToast, successToast } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,6 +28,9 @@ const SignUp = () => {
     if (response.ok && setUser) {
       setUser(result);
       router.push("/contact");
+      successToast("Sign up Successfull");
+    } else {
+      errorToast("Failed to sign up");
     }
   });
 

@@ -1,5 +1,6 @@
 "use client";
 import { ContactDataType } from "@/lib/types";
+import { errorToast, successToast } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
@@ -26,9 +27,10 @@ const Contact = () => {
     const result = await response.json();
 
     if (response.ok && result) {
-      console.log(result);
+      successToast("Message was sent successfully");
+    } else {
+      errorToast("Something went wrong!");
     }
-    console.log(result);
   });
 
   const showInputError = () => {

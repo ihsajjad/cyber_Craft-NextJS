@@ -1,6 +1,7 @@
 "use client";
 import TablePagination from "@/components/TablePagination";
 import { ContactDataType } from "@/lib/types";
+import { successToast, errorToast } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -54,8 +55,10 @@ const Dashboard = () => {
     const result = await response.json();
     if (response.ok) {
       setRefetch((p) => !p);
+      successToast("Contact was deleted successfully");
+    } else {
+      errorToast("Something went wrong");
     }
-    console.log(result);
   };
 
   const isAdmin = user?.role === "Admin";
